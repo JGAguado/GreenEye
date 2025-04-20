@@ -21,9 +21,8 @@ Install these dependencies with the command:
 pip install -r requirements.txt
 ```
 
-Run your FastAPI app with:
+Run FastAPI app with:
 ```sh
-uvicorn app:app --reload
+python3 model_inference.py
 ```
 
-Let me know if you need further assistance!
