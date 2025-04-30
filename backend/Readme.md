@@ -92,14 +92,6 @@ backend/
 └── Dockerfile          # Docker configuration
 ```
 
-## Environment Variables
-
-Create a `.env` file in the backend directory with the following variables:
-```
-MODEL_PATH=/path/to/your/model
-API_KEY=your_api_key
-```
-
 ## Contributing
 
 1. Create a new branch for your feature
