@@ -1,5 +1,5 @@
 """
-model_inference.py
+main.py
 
 Module for loading Pl@ntNet-300K pretrained models and running inference on leaf images.
 Includes a FastAPI endpoint for species prediction.
