@@ -2,7 +2,7 @@
 
 This is the backend service for the GreenEye application, built with FastAPI.
 
-## Dependencies
+## 📦 Dependencies
 
 The project uses the following dependencies:
 
@@ -17,88 +17,156 @@ numpy>=1.24.0
 torch>=2.0.0
 torchvision>=0.15.0
 python-dotenv>=1.0.0
+bcrypt==3.2.0
+passlib[bcrypt]>=1.7.4
+python-jose>=3.3.0
 ```
 
 ### Package Descriptions
-- **fastapi:** Modern web framework for building APIs with Python
-- **uvicorn:** ASGI server implementation for running FastAPI applications
-- **httpx:** Modern async HTTP client for making requests to the ML server
-- **pillow:** Python Imaging Library for image processing
-- **python-multipart:** Required for handling file uploads in FastAPI
-- **timm:** Computer vision model library
-- **torch & torchvision:** Deep learning framework and vision utilities
-- **numpy:** Numerical computing library
-- **python-dotenv:** Environment variable management
 
-## Setup
+- **fastapi:** Modern web framework for building APIs with Python
+- **uvicorn:** ASGI server for running FastAPI apps
+- **httpx:** Async HTTP client
+- **pillow:** Image file processing
+- **python-multipart:** File upload support
+- **timm:** PyTorch image model utilities
+- **torch & torchvision:** Core ML framework and vision utilities
+- **numpy:** Array computing
+- **python-dotenv:** Environment variable loader
+- **bcrypt:** Password hashing backend
+- **passlib:** High-level password hashing API
+- **python-jose:** JSON Web Token (JWT) management
+
+---
+
+## 🛠️ Setup
 
 ### Local Development
 
-1. Create a virtual environment (recommended):
-```sh
+1. Create a virtual environment:
+
+```bash
 python -m venv venv
-source venv/bin/activate  # On Unix/macOS
+source venv/bin/activate  # Unix/macOS
 # or
-.\venv\Scripts\activate  # On Windows
+.env\Scriptsctivate  # Windows
 ```
 
 2. Install dependencies:
-```sh
+
+```bash
 pip install -r requirements.txt
 ```
+
+---
 
 ### Docker Setup
 
 1. Build the Docker image:
-```sh
+
+```bash
 docker build -t greeneye-backend .
 ```
 
 2. Run the container:
-```sh
+
+```bash
 docker run -p 8000:8000 greeneye-backend
 ```
 
-## Running the Application
+The service will be available at `http://localhost:8000`
 
-### Local Development
-Start the FastAPI server:
-```sh
-python3 model_inference.py
+---
+
+## 🚀 Running the Application
+
+### Local (with auto-reload):
+
+```bash
+uvicorn main.main:app --reload
 ```
 
-For development with auto-reload:
-```sh
-uvicorn model_inference:app --reload
+---
+
+## 🔐 Authentication Guide
+
+GreenEye uses **JWT-based authentication** to secure access to protected endpoints like model prediction.
+
+### ➕ Register a new user
+
+```bash
+curl -X POST "http://localhost:8000/register?username=admin&password=123456"
 ```
 
-### Docker
-The server will start on `http://localhost:8000` by default.
+### 🔑 Login and get access token
 
-## API Documentation
+```bash
+curl -X POST "http://localhost:8000/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=admin&password=123456"
+```
 
-Once the server is running, you can access:
-- Interactive API documentation: `http://localhost:8000/docs`
-- Alternative API documentation: `http://localhost:8000/redoc`
+The response:
 
-## Project Structure
+```json
+{
+  "access_token": "your.jwt.token",
+  "token_type": "bearer"
+}
+```
+
+---
+
+## 🌿 Inference API
+
+### POST `/predict/species/`
+
+This endpoint runs a model prediction on a plant image.
+
+- Requires: **Authorization: Bearer <token>**
+- Input: Image file (jpeg/png) as `file`
+- Output: Prediction response
+
+#### Example:
+
+```bash
+curl -X POST "http://localhost:8000/predict/species/" \
+  -H "Authorization: Bearer your.jwt.token" \
+  -F "file=@leaf.jpg"
+```
+
+---
+
+## 📁 Project Structure
 
 ```
 backend/
-├── model_inference.py    # Main FastAPI application
-├── utils.py             # Utility functions
-├── models/              # ML model related code
-├── requirements.txt     # Python dependencies
-└── Dockerfile          # Docker configuration
+├── main.py     # FastAPI app with inference logic
+├── auth.py                # User registration, login, JWT
+├── users.json             # User store (JSON)
+├── requirements.txt       # Python dependencies
+└── Dockerfile             # Deployment container
 ```
 
-## Contributing
+---
 
-1. Create a new branch for your feature
-2. Make your changes
+## 📑 API Docs
+
+Once running, visit:
+
+- Swagger UI: `http://localhost:8000/docs`
+- Redoc: `http://localhost:8000/redoc`
+
+---
+
+## 🤝 Contributing
+
+1. Create a new feature branch
+2. Implement your changes
 3. Submit a pull request
 
-## License
+---
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 🪪 License
 
+This project is licensed under the MIT License.

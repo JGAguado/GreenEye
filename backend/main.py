@@ -8,10 +8,11 @@ import io
 import os
 import json
 from typing import List, Dict
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
 from PIL import Image
 import torch
 import torchvision.transforms as transforms
+from auth import get_current_user, router as  auth_router
 
 # Import official model loader
 from utils import load_model
@@ -101,12 +102,14 @@ def predict_species(
 
 # FastAPI application
 app = FastAPI(title="GreenEye Species Classifier")
+app.include_router(auth_router)
 
 @app.post('/predict/species/')
 async def species_endpoint(
     file: UploadFile = File(...),
     topk: int = 5,
-    use_gpu: bool = False
+    use_gpu: bool = False,
+    user: dict = Depends(get_current_user)
 ):
     """
     Upload an image to receive top-k species predictions.
