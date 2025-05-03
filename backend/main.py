@@ -8,6 +8,7 @@ Includes a FastAPI endpoint for species prediction.
 import io
 import json
 import os
+from datetime import datetime
 from typing import Dict, List
 
 import torch
@@ -26,6 +27,13 @@ from utils import load_model
 # Paths to mapping files
 CLASS_IDX_TO_SPECIES_ID_PATH = "models/class_idx_to_species_id.json"
 SPECIES_ID_TO_NAME_PATH = "models/plantnet300K_species_id_2_name.json"
+
+from functools import lru_cache
+
+
+@lru_cache()
+def get_model(use_gpu=False):
+    return load_species_model(use_gpu=use_gpu)
 
 
 # Helper to load species model (official weights)
@@ -126,7 +134,7 @@ async def species_endpoint(
     file: UploadFile = File(...),
     topk: int = 5,
     use_gpu: bool = False,
-    user: dict = Depends(get_current_user),
+    # user: dict = Depends(get_current_user),
 ):
     """
     Upload an image to receive top-k species predictions.
@@ -148,12 +156,13 @@ async def species_endpoint(
         raise HTTPException(status_code=400, detail="Invalid image format.")
 
     # Load model and mappings
-    model = load_species_model(use_gpu=use_gpu)
+    model = get_model(use_gpu=use_gpu)
     idx2species = get_idx2species()
     preds = predict_species(model, img, topk, idx2species)
     log_request(
         {
-            "username": user["username"],
+            "timestamp": datetime.utcnow().isoformat(),
+            # "username": user["username"],
             "image_filename": file.filename,
             "topk": topk,
             "results": preds,

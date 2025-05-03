@@ -58,27 +58,73 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 
 # 登录接口
-@router.post("/token")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(401, detail="Incorrect username or password")
-    token = create_access_token({"sub": user["username"]})
-    return {"access_token": token, "token_type": "bearer"}
+# @router.post("/token")
+# async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+#     user = authenticate_user(form_data.username, form_data.password)
+#     if not user:
+#         raise HTTPException(401, detail="Incorrect username or password")
+#     token = create_access_token({"sub": user["username"]})
+#     return {"access_token": token, "token_type": "bearer"}
 
 
 # 注册接口
-@router.post("/register")
-async def register(username: str, password: str):
-    users = load_users()
-    if username in users:
-        raise HTTPException(400, detail="Username already exists.")
-    hashed = pwd_context.hash(password)
-    users[username] = {"password": hashed}
-    save_users(users)
-    return {"status": "ok", "message": "User registered."}
+# @router.post("/register")
+# async def register(username: str, password: str):
+#     users = load_users()
+#     if username in users:
+#         raise HTTPException(400, detail="Username already exists.")
+#     hashed = pwd_context.hash(password)
+#     users[username] = {"password": hashed}
+#     save_users(users)
+#     return {"status": "ok", "message": "User registered."}
 
 
 @router.get("/admin/logs/")
 def fetch_logs(limit: int = 100):
     return JSONResponse(content={"logs": get_logs(limit)})
+
+
+from typing import Optional
+
+from fastapi import Body, Path
+
+# 获取所有用户（仅用户名）
+# @router.get("/admin/users/")
+# def list_users():
+#     users = load_users()
+#     return {"users": list(users.keys())}
+
+
+# 创建新用户（等同于注册）
+# @router.post("/admin/users/")
+# def create_user(username: str = Body(...), password: str = Body(...)):
+#     users = load_users()
+#     if username in users:
+#         raise HTTPException(400, detail="User already exists.")
+#     hashed = pwd_context.hash(password)
+#     users[username] = {"password": hashed}
+#     save_users(users)
+#     return {"status": "ok", "message": f"User '{username}' created."}
+
+
+# 更新用户密码
+# @router.put("/admin/users/{username}")
+# def update_user(username: str = Path(...), new_password: str = Body(...)):
+#     users = load_users()
+#     if username not in users:
+#         raise HTTPException(404, detail="User not found.")
+#     hashed = pwd_context.hash(new_password)
+#     users[username]["password"] = hashed
+#     save_users(users)
+#     return {"status": "ok", "message": f"Password for '{username}' updated."}
+
+
+# 删除用户
+# @router.delete("/admin/users/{username}")
+# def delete_user(username: str = Path(...)):
+#     users = load_users()
+#     if username not in users:
+#         raise HTTPException(404, detail="User not found.")
+#     del users[username]
+#     save_users(users)
+#     return {"status": "ok", "message": f"User '{username}' deleted."}
