@@ -1,9 +1,14 @@
-from fastapi import APIRouter, HTTPException, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from passlib.context import CryptContext
-from jose import jwt, JWTError
-import json, os
+import json
+import os
 from datetime import datetime, timedelta
+
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+
+from logger import get_logs
 
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -16,6 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 USER_DB = "users.json"
 
+
 # 加载用户数据
 def load_users():
     if not os.path.exists(USER_DB):
@@ -23,9 +29,11 @@ def load_users():
     with open(USER_DB, "r") as f:
         return json.load(f)
 
+
 def save_users(users):
     with open(USER_DB, "w") as f:
         json.dump(users, f, indent=2)
+
 
 def authenticate_user(username: str, password: str):
     users = load_users()
@@ -33,11 +41,13 @@ def authenticate_user(username: str, password: str):
         return {"username": username}
     return None
 
+
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
@@ -45,6 +55,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         return {"username": payload.get("sub")}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
+
 
 # 登录接口
 @router.post("/token")
@@ -54,6 +65,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(401, detail="Incorrect username or password")
     token = create_access_token({"sub": user["username"]})
     return {"access_token": token, "token_type": "bearer"}
+
 
 # 注册接口
 @router.post("/register")
@@ -65,3 +77,8 @@ async def register(username: str, password: str):
     users[username] = {"password": hashed}
     save_users(users)
     return {"status": "ok", "message": "User registered."}
+
+
+@router.get("/admin/logs/")
+def fetch_logs(limit: int = 100):
+    return JSONResponse(content={"logs": get_logs(limit)})
