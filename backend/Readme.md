@@ -88,35 +88,6 @@ uvicorn main.main:app --reload
 
 ---
 
-## 🔐 Authentication Guide
-
-GreenEye uses **JWT-based authentication** to secure access to protected endpoints like model prediction.
-
-### ➕ Register a new user
-
-```bash
-curl -X POST "http://localhost:8000/register?username=admin&password=123456"
-```
-
-### 🔑 Login and get access token
-
-```bash
-curl -X POST "http://localhost:8000/token" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=admin&password=123456"
-```
-
-The response:
-
-```json
-{
-  "access_token": "your.jwt.token",
-  "token_type": "bearer"
-}
-```
-
----
-
 ## 🌿 Inference API
 
 ### POST `/predict/species/`
@@ -131,7 +102,6 @@ This endpoint runs a model prediction on a plant image.
 
 ```bash
 curl -X POST "http://localhost:8000/predict/species/" \
-  -H "Authorization: Bearer your.jwt.token" \
   -F "file=@leaf.jpg"
 ```
 
@@ -142,8 +112,6 @@ curl -X POST "http://localhost:8000/predict/species/" \
 ```
 backend/
 ├── main.py     # FastAPI app with inference logic
-├── auth.py                # User registration, login, JWT
-├── users.json             # User store (JSON)
 ├── requirements.txt       # Python dependencies
 └── Dockerfile             # Deployment container
 ```

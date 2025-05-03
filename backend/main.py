@@ -13,13 +13,12 @@ from typing import Dict, List
 
 import torch
 import torchvision.transforms as transforms
-from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.responses import JSONResponse
 from PIL import Image
 from torchvision.models import resnet18
 
-from auth import get_current_user
-from auth import router as auth_router
-from logger import log_request
+from logger import get_logs, log_request
 
 # Import official model loader
 from utils import load_model
@@ -126,7 +125,6 @@ def predict_species(
 
 # FastAPI application
 app = FastAPI(title="GreenEye Species Classifier")
-app.include_router(auth_router)
 
 
 @app.post("/predict/species/")
@@ -134,7 +132,6 @@ async def species_endpoint(
     file: UploadFile = File(...),
     topk: int = 5,
     use_gpu: bool = False,
-    # user: dict = Depends(get_current_user),
 ):
     """
     Upload an image to receive top-k species predictions.
@@ -162,13 +159,17 @@ async def species_endpoint(
     log_request(
         {
             "timestamp": datetime.utcnow().isoformat(),
-            # "username": user["username"],
             "image_filename": file.filename,
             "topk": topk,
             "results": preds,
         }
     )
     return {"predictions": preds}
+
+
+@app.get("/logs/")
+def fetch_logs(limit: int = 100):
+    return JSONResponse(content={"logs": get_logs(limit)})
 
 
 if __name__ == "__main__":
