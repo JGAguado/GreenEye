@@ -49,7 +49,7 @@ python-jose>=3.3.0
 python -m venv venv
 source venv/bin/activate  # Unix/macOS
 # or
-.env\Scriptsctivate  # Windows
+venv\Scripts\activate      # Windows
 ```
 
 2. Install dependencies:
@@ -88,6 +88,34 @@ uvicorn main.main:app --reload
 
 ---
 
+## 🧪 Running Unit Tests
+
+### Running Tests:
+
+To run unit tests, use:
+
+```bash
+pytest
+```
+
+### Checking Test Coverage:
+
+To check test coverage, use:
+
+```bash
+pytest --cov=backend
+```
+
+To generate an HTML coverage report, use:
+
+```bash
+pytest --cov=backend --cov-report=html
+```
+
+The HTML report will be available in the `htmlcov/` directory.
+
+---
+
 ## 🌿 Inference API
 
 ### POST `/predict/species/`
@@ -110,10 +138,27 @@ curl -X POST "http://localhost:8000/predict/species/" \
 ## 📁 Project Structure
 
 ```
-backend/
-├── main.py     # FastAPI app with inference logic
-├── requirements.txt       # Python dependencies
-└── Dockerfile             # Deployment container
+.
+├── app
+│   ├── logger.py                 # Logging utilities
+│   ├── main.py                   # FastAPI app with inference logic
+│   └── utils.py                  # Helper functions and model utilities
+├── Dockerfile                    # Docker configuration for containerization
+├── logs
+│   └── requests.jsonl            # Log file for API requests
+├── models
+│   ├── class_idx_to_species_id.json  # Mapping of class indices to species IDs
+│   ├── plantnet300K_species_id_2_name.json  # Mapping of species IDs to names
+│   └── resnet18_weights_best_acc.tar  # Pretrained model weights
+├── noxfile.py                    # Nox configuration for automation
+├── pytest.ini                    # Pytest configuration file
+├── Readme.md                     # Project documentation
+├── requirements.txt              # Python dependencies
+└── tests
+    ├── requirements.txt          # Testing dependencies
+    ├── test_logger.py            # Unit tests for logger.py
+    ├── test_main.py              # Unit tests for main.py
+    └── test_utils.py             # Unit tests for utils.py
 ```
 
 ---
