@@ -12,6 +12,7 @@ from app.utils import (
     save,
     set_seed,
     update_correct_per_class,
+    update_correct_per_class_topk
 )
 
 
@@ -38,10 +39,16 @@ def temp_file(tmp_path):
 
 
 def test_get_model():
+    # Test with a valid model
     args = Args(model="resnet18", pretrained=False)
     model = get_model(args, n_classes=10)
     assert isinstance(model, nn.Module)
     assert model.fc.out_features == 10
+
+    # Test with an invalid model
+    args = Args(model="invalid_model", pretrained=False)
+    with pytest.raises(NotImplementedError):  # Expect NotImplementedError
+        get_model(args, n_classes=10)
 
 
 def test_set_seed():
@@ -60,9 +67,14 @@ def test_set_seed():
 
 
 def test_load_model(dummy_model, temp_file):
+    # Test loading a valid model
     torch.save({"model": dummy_model.state_dict(), "epoch": 5}, temp_file)
     epoch = load_model(dummy_model, temp_file, use_gpu=False)
     assert epoch == 5
+
+    # Test loading from a non-existent file
+    with pytest.raises(FileNotFoundError):
+        load_model(dummy_model, "non_existent_file.pth", use_gpu=False)
 
 
 def test_save(dummy_model, dummy_optimizer, temp_file):
@@ -75,6 +87,7 @@ def test_save(dummy_model, dummy_optimizer, temp_file):
 
 
 def test_update_correct_per_class():
+    # Test with correct predictions
     batch_output = torch.tensor([[0.1, 0.9], [0.8, 0.2]])
     batch_y = torch.tensor([1, 0])
     d = Counter()
@@ -82,6 +95,21 @@ def test_update_correct_per_class():
     assert d[0] == 1
     assert d[1] == 1
 
+    # Test with incorrect predictions
+    batch_output = torch.tensor([[0.9, 0.1], [0.2, 0.8]])
+    batch_y = torch.tensor([1, 0])
+    d = Counter()
+    update_correct_per_class(batch_output, batch_y, d)
+    assert d[0] == 0
+    assert d[1] == 0
+
+def test_update_correct_per_class_topk():
+    outputs = torch.tensor([[0.1, 0.9, 0.0], [0.2, 0.3, 0.5]])
+    labels = torch.tensor([1, 0])
+    d = Counter()
+    update_correct_per_class_topk(outputs, labels, d, k=2)
+    assert d[1] == 1  # Label 1 is in top-2
+    assert d[0] == 0  # Label 0 is not in top-2
 
 def test_get_data(tmp_path):
     # Create dummy dataset structure
@@ -109,3 +137,14 @@ def test_get_data(tmp_path):
     assert len(valloader) == 1
     assert len(testloader) == 1
     assert dataset_attributes["n_classes"] == 1
+
+    # Test with missing dataset directory
+    with pytest.raises(FileNotFoundError):
+        get_data(
+            root="non_existent_directory",
+            image_size=224,
+            crop_size=224,
+            batch_size=1,
+            num_workers=0,
+            pretrained=False,
+        )
