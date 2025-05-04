@@ -103,13 +103,15 @@ pytest
 To check test coverage, use:
 
 ```bash
-pytest --cov=backend
+cd backend
+pytest --cov=app
 ```
 
 To generate an HTML coverage report, use:
 
 ```bash
-pytest --cov=backend --cov-report=html
+cd backend
+pytest --cov=app --cov-report=html
 ```
 
 The HTML report will be available in the `htmlcov/` directory.
