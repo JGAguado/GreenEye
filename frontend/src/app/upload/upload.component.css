@@ -1,0 +1,97 @@
+.upload-page {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+  }
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f000; /* You can remove this if you don't want gray */
+  }
+  
+  .left-side img {
+    width: 80%;
+    aspect-ratio : 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .right-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+  }
+  
+  .right-side h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #4caf50;
+  }
+    
+  .right-side h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #4caf50;
+  }
+  .right-side p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #555;
+  }
+  .upload-circle {
+    width: 300px;
+    height: 300px;
+    background-color: #d2f5d2; /* Light green */
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    padding: 1rem;
+    transition: 0.5s;
+  }
+  
+  .upload-circle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #a8e6a1;
+  }
+  .upload-circle button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  
+  .upload-circle button:hover {
+    background-color: #43a047;
+  }
+  
+  .upload-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .drop-text {
+    font-size: 0.9rem;
+    color: #555;
+  }
