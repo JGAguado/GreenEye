@@ -18,10 +18,10 @@ from fastapi.responses import JSONResponse
 from PIL import Image
 from torchvision.models import resnet18
 
-from logger import get_logs, log_request
+from app.logger import get_logs, log_request
 
 # Import official model loader
-from utils import load_model
+from app.utils import load_model
 
 # Paths to mapping files
 CLASS_IDX_TO_SPECIES_ID_PATH = "models/class_idx_to_species_id.json"

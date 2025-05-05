@@ -1,0 +1,17 @@
+# Testing framework
+pytest
+
+# Coverage measurement
+pytest-cov
+
+# Mocking library (optional, already included in Python's unittest.mock)
+mock
+
+# FastAPI testing
+fastapi
+httpx
+
+# Additional dependencies for your project (if needed)
+torch
+torchvision
+Pillow
