@@ -62,6 +62,22 @@ pip install -r requirements.txt
 
 ### Docker Setup
 
+#### Option 1: Using Docker Compose (Recommended)
+
+1. Build and run using docker-compose:
+
+```bash
+docker-compose up --build
+```
+
+This will:
+- Build the Docker image
+- Start the container
+- Mount necessary volumes for logs and models
+- Expose the service on port 8000
+
+#### Option 2: Manual Docker Setup
+
 1. Build the Docker image:
 
 ```bash
@@ -83,7 +99,13 @@ The service will be available at `http://localhost:8000`
 ### Local (with auto-reload):
 
 ```bash
-uvicorn main.main:app --reload
+uvicorn app.main:app --reload
+```
+
+### Production:
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
 ---
@@ -146,6 +168,7 @@ curl -X POST "http://localhost:8000/predict/species/" \
 │   ├── main.py                   # FastAPI app with inference logic
 │   └── utils.py                  # Helper functions and model utilities
 ├── Dockerfile                    # Docker configuration for containerization
+├── docker-compose.yaml           # Docker Compose configuration
 ├── logs
 │   └── requests.jsonl            # Log file for API requests
 ├── models
