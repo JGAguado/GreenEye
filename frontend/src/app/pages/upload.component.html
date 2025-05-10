@@ -45,7 +45,7 @@
         *ngIf="imageUrl"
         mat-raised-button
         color="accent"
-        (click)="submit()"
+        (click)="onSubmit()"
         [disabled]="isLoading"
     >
         <mat-icon *ngIf="isLoading" class="spinner">autorenew</mat-icon>

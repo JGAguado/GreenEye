@@ -1,0 +1,22 @@
+<div class="results-container">
+  <div class="left-panel">
+    <img [src]="uploadedImageUrl" alt="Uploaded Plant" />
+  </div>
+  <div class="right-panel">
+    <h2>Top Match</h2>
+    <mat-card *ngIf="predictions.length">
+      <h3>{{ predictions[0].name }}</h3>
+      <mat-progress-bar mode="determinate" [value]="predictions[0].probability * 100"></mat-progress-bar>
+      <p>{{ (predictions[0].probability * 100) | number:'1.0-0' }}% confidence</p>
+    </mat-card>
+
+    <h2 *ngIf="predictions.length > 1">Other Matches</h2>
+    <mat-card *ngFor="let pred of predictions.slice(1)">
+      <strong>{{ pred.name }}</strong>
+      <mat-progress-bar mode="determinate" [value]="pred.probability * 100"></mat-progress-bar>
+      <p>{{ (pred.probability * 100) | number:'1.0-0' }}% confidence</p>
+    </mat-card>
+
+    <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+  </div>
+</div>
