@@ -1,25 +1,8 @@
+# Frontend
 
----
-
-## GreenEye Frontend
-
-This is the Angular-based frontend for the GreenEye plant recognition platform. It allows users to upload plant photos and view results showing the most likely matches and confidence levels.
-
-### 🖼 Wireframes
-
-Preview the planned UI structure:
-
-- [Upload Screen](./docs/wireframes/upload-screen.png)
-- [Results Screen](./docs/wireframes/results-screen.png)
-
-For technical details on how the frontend is structured and how it integrates with the backend, see [Frontend Workflow Documentation](./docs/frontend-workflow.md).
-
-
-
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.10.
 
 ## Development server
-
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
 
 To start a local development server, run:
 

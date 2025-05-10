@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { UploadComponent } from './upload/upload.component'; 
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UploadComponent], // 👈 Add UploadComponent here
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  imports: [RouterOutlet],
+  template: '<router-outlet />',
 })
-export class AppComponent { }
+export class AppComponent {}

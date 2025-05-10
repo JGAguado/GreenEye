@@ -22,3 +22,5 @@ env/
 # OS
 .DS_Store
 Thumbs.db 
+/import-labels.sh
+/labels.json
