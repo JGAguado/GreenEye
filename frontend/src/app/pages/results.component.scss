@@ -1,0 +1,59 @@
+.results-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden; // Prevent content overflow
+  background: #f6fff6; // Match the background color of the upload page
+}
+
+.left-panel {
+  flex: 1;
+  background-color: #e4f5e7; // Light green background
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    border-radius: 50%; // Circular image
+    width: 80%; // Match the size of the illustration on the upload page
+    aspect-ratio: 1 / 1; // Maintain a square aspect ratio
+    object-fit: cover; // Ensure the image fits within the circle
+  }
+}
+
+.right-panel {
+  flex: 1;
+  background-color: #ffffff; // White background
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+
+  h2 {
+    color: #1b5e20; // Dark green for headings
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .results-content {
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+  }
+
+  mat-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  button {
+    margin-top: 2rem;
+    align-self: center;
+    color: #2e7d32;
+
+  }
+}
