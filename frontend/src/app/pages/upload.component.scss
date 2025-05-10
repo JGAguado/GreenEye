@@ -57,9 +57,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto 2rem; // Add extra margin below the upload zone
+  position: relative; // Make the upload zone a positioning context
+  overflow: visible; // Allow elements to appear outside the circle
+  margin: 0 auto 2rem;
 }
 
 .button-container {
@@ -96,11 +96,21 @@
 }
 
 .remove-btn {
-  position: absolute;
-  top: 8px;
+  position: absolute; // Position the button relative to the upload zone
+  top: 0px; // Adjust the vertical position to move it outside the circle
+  right: 0px; // Adjust the horizontal position to move it outside the circle
   background: rgb(250, 96, 96);
   border-radius: 50%;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  z-index: 10; // Ensure it appears above other elements
+  width: 50px; // Set a fixed width for the button
+  height: 50px; // Set a fixed height for the button
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .format-info {
@@ -112,6 +122,18 @@
 button[mat-raised-button] {
   margin-top: 1rem;
   color: #2e7d32;
+  outline: none;
+  transition: box-shadow 0.3s ease; // Smooth transition for the shadow effect
+}
+
+button[mat-raised-button]:hover {
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.6); // Green shadow on hover
+}
+
+button[mat-raised-button]:active,
+button[mat-raised-button]:focus {
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.8); // Green shadow on click or focus
+  outline: none; // Remove default focus outline
 }
 
 .spinner {
