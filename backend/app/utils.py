@@ -197,7 +197,8 @@ def get_model(args, n_classes):
             num_ftrs = model.classifier[1].in_features
             model.classifier[1] = nn.Linear(num_ftrs, n_classes)
         elif args.model == "inception_v3":
-            model = inception_v3(pretrained=True, aux_logits=False)
+            model = inception_v3(pretrained=True, aux_logits=True, transform_input=True)
+            model.AuxLogits = None
             num_ftrs = model.fc.in_features
             model.fc = nn.Linear(num_ftrs, n_classes)
         elif args.model == "squeezenet":

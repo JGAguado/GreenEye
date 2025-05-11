@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  backend:
+    image: greeneye-backend:latest  # Use the existing image if available
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: greeneye-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/app/logs  # Mount logs directory for persistence
+      - ./models:/app/models  # Mount models directory for access to model files
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
