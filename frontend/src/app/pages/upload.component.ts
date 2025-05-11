@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
 })
-
 export class UploadComponent {
   imageUrl: SafeUrl | null = null;
   selectedFile: File | null = null;
@@ -55,38 +54,45 @@ export class UploadComponent {
     }
   }
 
-  onDrop(event: DragEvent) {
+  onDrop(event: DragEvent): void {
     event.preventDefault();
     if (event.dataTransfer?.files && event.dataTransfer.files[0]) {
       this.validateAndSetFile(event.dataTransfer.files[0]);
     }
   }
 
-  onDragOver(event: DragEvent) {
+  onDragOver(event: DragEvent): void {
     event.preventDefault();
   }
 
-  removeImage() {
+  removeImage(): void {
     this.imageUrl = null;
     this.selectedFile = null;
     this.supportedFormatsMessage = 'Supported formats: JPG, PNG';
     this.isInvalidFormat = false;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (!this.selectedFile) return;
 
     this.isLoading = true;
+    
+      // Create a URL for the uploaded file
+    const fileUrl = URL.createObjectURL(this.selectedFile);
+    this.predictionService.setUploadedImageUrl(fileUrl); // Set the uploaded image URL
+
+
     this.predictionService.simulatePrediction(this.selectedFile).subscribe({
-      next: res => {
+      next: (res: { predictions: any }) => {
         this.predictionService.updatePredictions(res.predictions);
+        this.predictionService.fetchPredictions(); // Ensure predictions are fetched
         this.isLoading = false;
         this.router.navigate(['/results']);
       },
-      error: err => {
+      error: (err: any) => {
         this.isLoading = false;
         console.error('Simulation error:', err);
-      }
+      },
     });
   }
 }

@@ -23,17 +23,23 @@ import { PredictionService } from '../services/prediction.service';
 })
 
 export class ResultsComponent implements OnInit {
-  predictions: any[] = [];
+  pretrainedModelPredictions: { class_index: number; name: string; probability: number }[] = [];
+  customModelPredictions: { class_index: number; name: string; probability: number }[] = [];
   uploadedImageUrl: string | null = null;
 
   constructor(private predictionService: PredictionService) {}
 
   ngOnInit(): void {
     this.predictionService.predictions$.subscribe(preds => {
-      this.predictions = preds;
+      console.log('Predictions received:', preds); // Debugging log
+      if (preds && preds.pretrained_model && preds.custom_model) {
+        this.pretrainedModelPredictions = preds.pretrained_model;
+        this.customModelPredictions = preds.custom_model;
+      }
     });
 
     this.predictionService.uploadedImageUrl$.subscribe(url => {
+      console.log('Uploaded image URL:', url); // Debugging log
       this.uploadedImageUrl = url;
     });
   }
