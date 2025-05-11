@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+
+// 1. Define a color config for Material 3 (do not use define-palette)
+$my-color-config: (
+  primary: #2e7d32,
+  on-primary: #ffffff,
+  primary-container: #a5d6a7,
+  on-primary-container: #1b5e20,
+  secondary: #388e3c,
+  on-secondary: #ffffff,
+  background: #f6fff7,
+  on-background: #1b5e20,
+  surface: #f6fff7,
+  on-surface: #1b5e20,
+  error: #b00020,
+  on-error: #ffffff,
+);
+
+
