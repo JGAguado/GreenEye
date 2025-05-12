@@ -9,7 +9,7 @@ import io
 import json
 import os
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import torch
 import torchvision.transforms as transforms
@@ -21,7 +21,7 @@ from torchvision.models import resnet18
 from app.logger import get_logs, log_request
 
 # Import official model loader
-from app.utils import load_model
+from app.utils import load_model, get_model
 
 # Paths to mapping files
 CLASS_IDX_TO_SPECIES_ID_PATH = "models/class_idx_to_species_id.json"
@@ -31,8 +31,13 @@ from functools import lru_cache
 
 
 @lru_cache()
-def get_model(use_gpu=False):
+def get_pretrained_model(use_gpu=False):
     return load_species_model(use_gpu=use_gpu)
+
+
+@lru_cache()
+def get_custom_model(use_gpu=False):
+    return load_custom_model(use_gpu=use_gpu)
 
 
 # Helper to load species model (official weights)
@@ -45,6 +50,27 @@ def load_species_model(use_gpu: bool = False) -> torch.nn.Module:
         Model ready for inference (in eval mode)
     """
     filename = "models/resnet18_weights_best_acc.tar"
+    model = resnet18(num_classes=1081)
+    load_model(model, filename=filename, use_gpu=use_gpu)
+    model.eval()
+    return model
+
+
+# Helper to load custom model
+def load_custom_model(use_gpu: bool = False) -> torch.nn.Module:
+    """
+    Initializes and loads the custom model.
+    Args:
+        use_gpu: whether to load weights onto GPU
+    Returns:
+        Model ready for inference (in eval mode)
+    """
+    # filename = "models/custom_model_weights.tar"
+    filename = "models/resnet18_weights_best_acc.tar"
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"Custom model weights not found at {filename}")
+    
+    # Initialize model (using ResNet18 as an example, modify as needed)
     model = resnet18(num_classes=1081)
     load_model(model, filename=filename, use_gpu=use_gpu)
     model.eval()
@@ -134,13 +160,27 @@ async def species_endpoint(
     use_gpu: bool = False,
 ):
     """
-    Upload an image to receive top-k species predictions.
+    Upload an image to receive top-k species predictions from both pretrained and custom models.
     Query params:
       - use_gpu: whether to map model to GPU
-    Returns JSON with 'predictions': list of {
-      'class_index': int,
-      'name': str,
-      'probability': float
+    Returns JSON with predictions from both models:
+    {
+      "pretrained_model": [
+        {
+          "class_index": int,
+          "name": str,
+          "probability": float
+        },
+        ...
+      ],
+      "custom_model": [
+        {
+          "class_index": int,
+          "name": str,
+          "probability": float
+        },
+        ...
+      ]
     }
     """
     # Validate file type
@@ -152,19 +192,37 @@ async def species_endpoint(
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid image format.")
 
-    # Load model and mappings
-    model = get_model(use_gpu=use_gpu)
+    # Load models and mappings
+    pretrained_model = get_pretrained_model(use_gpu=use_gpu)
     idx2species = get_idx2species()
-    preds = predict_species(model, img, topk, idx2species)
+    
+    # Get predictions from pretrained model
+    pretrained_preds = predict_species(pretrained_model, img, topk, idx2species)
+    
+    # Initialize response with pretrained model predictions
+    response = {
+        "pretrained_model": pretrained_preds,
+        "custom_model": None
+    }
+    
+    try:
+        # Try to get predictions from custom model
+        custom_model = get_custom_model(use_gpu=use_gpu)
+        custom_preds = predict_species(custom_model, img, topk, idx2species)
+        response["custom_model"] = custom_preds
+    except FileNotFoundError:
+        # If custom model is not available, set custom_model to None
+        pass
+    
     log_request(
         {
             "timestamp": datetime.utcnow().isoformat(),
             "image_filename": file.filename,
             "topk": topk,
-            "results": preds,
+            "results": response,
         }
     )
-    return {"predictions": preds}
+    return response
 
 
 @app.get("/logs/")
