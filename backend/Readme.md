@@ -49,7 +49,7 @@ python-jose>=3.3.0
 python -m venv venv
 source venv/bin/activate  # Unix/macOS
 # or
-venv\Scripts\activate      # Windows
+.env\Scriptsctivate  # Windows
 ```
 
 2. Install dependencies:
@@ -61,22 +61,6 @@ pip install -r requirements.txt
 ---
 
 ### Docker Setup
-
-#### Option 1: Using Docker Compose (Recommended)
-
-1. Build and run using docker-compose:
-
-```bash
-docker-compose up --build
-```
-
-This will:
-- Build the Docker image
-- Start the container
-- Mount necessary volumes for logs and models
-- Expose the service on port 8000
-
-#### Option 2: Manual Docker Setup
 
 1. Build the Docker image:
 
@@ -99,44 +83,8 @@ The service will be available at `http://localhost:8000`
 ### Local (with auto-reload):
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn main.main:app --reload
 ```
-
-### Production:
-
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-
----
-
-## 🧪 Running Unit Tests
-
-### Running Tests:
-
-To run unit tests, use:
-
-```bash
-pytest
-```
-
-### Checking Test Coverage:
-
-To check test coverage, use:
-
-```bash
-cd backend
-pytest --cov=app
-```
-
-To generate an HTML coverage report, use:
-
-```bash
-cd backend
-pytest --cov=app --cov-report=html
-```
-
-The HTML report will be available in the `htmlcov/` directory.
 
 ---
 
@@ -162,28 +110,10 @@ curl -X POST "http://localhost:8000/predict/species/" \
 ## 📁 Project Structure
 
 ```
-.
-├── app
-│   ├── logger.py                 # Logging utilities
-│   ├── main.py                   # FastAPI app with inference logic
-│   └── utils.py                  # Helper functions and model utilities
-├── Dockerfile                    # Docker configuration for containerization
-├── docker-compose.yaml           # Docker Compose configuration
-├── logs
-│   └── requests.jsonl            # Log file for API requests
-├── models
-│   ├── class_idx_to_species_id.json  # Mapping of class indices to species IDs
-│   ├── plantnet300K_species_id_2_name.json  # Mapping of species IDs to names
-│   └── resnet18_weights_best_acc.tar  # Pretrained model weights
-├── noxfile.py                    # Nox configuration for automation
-├── pytest.ini                    # Pytest configuration file
-├── Readme.md                     # Project documentation
-├── requirements.txt              # Python dependencies
-└── tests
-    ├── requirements.txt          # Testing dependencies
-    ├── test_logger.py            # Unit tests for logger.py
-    ├── test_main.py              # Unit tests for main.py
-    └── test_utils.py             # Unit tests for utils.py
+backend/
+├── main.py     # FastAPI app with inference logic
+├── requirements.txt       # Python dependencies
+└── Dockerfile             # Deployment container
 ```
 
 ---

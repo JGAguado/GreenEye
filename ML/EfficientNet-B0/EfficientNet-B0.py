@@ -45,11 +45,7 @@ def prepare_plantnet_data(plantnet_dir=None):
     """Prepare PlantNet-300K data for fine-tuning"""
     data = []
     
-<<<<<<< HEAD
-    # Set the correct path to dataset
-=======
     # Set the correct path to your PlantNet-300K dataset
->>>>>>> 8e38783458ef5d8fb91a7d4b4dba95fa7e40719e
     if plantnet_dir is None:
         plantnet_dir = Path(r"C:\Users\jeppu\Desktop\BTH\ML\Idefics3\Dataset\plantnet_300K")
     
