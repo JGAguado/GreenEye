@@ -1,13 +1,13 @@
 import json
 import os
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 LOG_FILE = "logs/requests.jsonl"
 
 
 def log_request(record: dict):
     os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-    record["timestamp"] = datetime.now(UTC).isoformat()
+    record["timestamp"] = datetime.now(timezone.utc).isoformat()
     with open(LOG_FILE, "a") as f:
         f.write(json.dumps(record) + "\n")
 
