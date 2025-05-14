@@ -1,0 +1,11 @@
+# This is a requirements file for the EfficientNet-B0 model
+
+# Use PyTorch with CUDA 11.8 support
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.20.0
+pandas>=1.3.0
+Pillow>=8.3.0
+tqdm>=4.61.0
+scikit-learn>=0.24.2
