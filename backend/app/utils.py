@@ -91,8 +91,16 @@ def load_model(model, filename, use_gpu):
 
     device = "cuda:0" if use_gpu else "cpu"
     d = torch.load(filename, map_location=device)
-    model.load_state_dict(d["model"])
-    return d["epoch"]
+    
+    # Handle different model weight formats
+    if isinstance(d, dict) and "model" in d:
+        # Format: {"model": state_dict, "epoch": epoch}
+        model.load_state_dict(d["model"])
+        return d["epoch"]
+    else:
+        # Format: direct state_dict
+        model.load_state_dict(d)
+        return 0
 
 
 def load_optimizer(optimizer, filename, use_gpu):
