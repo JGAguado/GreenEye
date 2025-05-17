@@ -40,15 +40,14 @@ GreenEye/
 
 ## 🖼️ Screenshots
 
-<!-- Replace the links below with your own screenshots or diagrams -->
 ###  Add image 
-![Add Screen](frontend\docs\wireframes\add-screen.png)
+![Add Screen](frontend/docs/wireframes/add-screen.png)
 
 ###  Upload image 
-![Upload Screen](frontend\docs\wireframes\upload-screen.png)
+![Upload Screen](frontend/docs/wireframes/upload-screen.png)
 
 ### Results 
-![Results Screen](frontend\docs\wireframes/results-screen.png)
+![Results Screen](frontend/docs/wireframes/results-screen.png)
 
 ---
 
