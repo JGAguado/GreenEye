@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: greeneye-backend
+    env: docker
+    plan: free
+    branch: main
+    repo: https://github.com/JGAguado/GreenEye
+    rootDir: backend
+    dockerfilePath: Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 8000
+
+  - type: web
+    name: greeneye-frontend
+    env: docker
+    plan: free
+    branch: main
+    repo: https://github.com/JGAguado/GreenEye
+    rootDir: frontend
+    dockerfilePath: Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: API_URL
+        value: https://greeneye-backend.onrender.com
