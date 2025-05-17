@@ -15,9 +15,20 @@ export class PredictionService {
 
   constructor(private http: HttpClient) {}
 
-  fetchPredictions(): void {
-    this.http.get('/assets/mockResults_multimodel.json').subscribe(data => {
-      this.predictionsSubject.next(data);
+  fetchPredictions(file: File): void {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const url = 'http://localhost:8000/predict/species/?topk=5&use_gpu=false';
+
+    this.http.post(url, formData).subscribe({
+      next: (data) => {
+        this.predictionsSubject.next(data);
+      },
+      error: (err) => {
+        console.error('Error fetching predictions from backend:', err);
+        throw new Error('Failed to get prediction from backend.');
+      }
     });
   }
 
@@ -26,16 +37,23 @@ export class PredictionService {
     this.uploadedImageUrlSubject.next(url);
   }
 
-  // Simulate prediction by uploading a file
+  // Use mockup JSON for simulation
   simulatePrediction(file: File): Observable<any> {
+    return this.http.get('/assets/mockResults_multimodel.json');
+  }
+
+  // Real connection to backend, throws error if no JSON is received
+  predictWithBackend(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post('/api/predict', formData).pipe(
+    const url = 'http://localhost:8000/predict/species/?topk=5&use_gpu=false';
+
+    return this.http.post(url, formData).pipe(
+      // If backend does not return JSON, throw error
       catchError(err => {
-        console.error('API endpoint not available, falling back to mock data:', err);
-        // Fallback to mock JSON if API fails
-        return this.http.get('/assets/mockResults_multimodel.json');
+        console.error('Error connecting to backend:', err);
+        throw new Error('Failed to get prediction from backend.');
       })
     );
   }

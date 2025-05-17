@@ -114,21 +114,20 @@ export class UploadComponent {
 
     this.isLoading = true;
 
-      // Create a URL for the uploaded file
+    // Create a URL for the uploaded file
     const fileUrl = URL.createObjectURL(this.selectedFile);
     this.predictionService.setUploadedImageUrl(fileUrl); // Set the uploaded image URL
 
-
-    this.predictionService.simulatePrediction(this.selectedFile).subscribe({
-      next: (res: { predictions: any }) => {
-        this.predictionService.updatePredictions(res.predictions);
-        this.predictionService.fetchPredictions(); // Ensure predictions are fetched
+    this.predictionService.predictWithBackend(this.selectedFile).subscribe({
+      next: (res: any) => {
+        // If your backend returns {pretrained_model: [...], custom_model: [...]}, update as needed
+        this.predictionService.updatePredictions(res);
         this.isLoading = false;
         this.router.navigate(['/results']);
       },
       error: (err: any) => {
         this.isLoading = false;
-        console.error('Simulation error:', err);
+        console.error('Backend error:', err);
       },
     });
   }
