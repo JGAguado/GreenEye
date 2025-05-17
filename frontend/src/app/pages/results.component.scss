@@ -1,0 +1,95 @@
+.results-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f6fff6; // Match the background color of the upload page
+}
+
+.left-panel {
+  flex: 1;
+  background-color: #e4f5e7; // Light green background
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    border-radius: 50%; // Circular image
+    width: 80%; // Match the size of the illustration on the upload page
+    aspect-ratio: 1 / 1; // Maintain a square aspect ratio
+    object-fit: cover; // Ensure the image fits within the circle
+  }
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.content {
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+.title {
+  color: #1b5e20; // Dark green for the title
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #388e3c; // Lighter green for the subtitle
+  margin-bottom: 2rem;
+}
+
+.predictions-section {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 2rem;
+  background-color: #c8e6c9; // Light green background for predictions
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.prediction-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+
+  .label {
+    font-weight: bold;
+    color: #2e7d32; // Green for labels
+  }
+
+  .probability {
+    color: #1b5e20; // Dark green for probabilities
+  }
+}
+
+button-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+button[mat-raised-button] {
+  margin-top: 1rem;
+  color: #2e7d32;
+  outline: none;
+  transition: box-shadow 0.3s ease; // Smooth transition for the shadow effect
+}
+
+button[mat-raised-button]:hover {
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.6); // Green shadow on hover
+}
+
+button[mat-raised-button]:active,
+button[mat-raised-button]:focus {
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.8); // Green shadow on click or focus
+  outline: none; // Remove default focus outline
+}

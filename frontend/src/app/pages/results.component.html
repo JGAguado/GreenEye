@@ -1,0 +1,37 @@
+<div class="results-container">
+  <!-- Left Panel: Image Preview -->
+  <div class="left-panel">
+    <img *ngIf="uploadedImageUrl" [src]="uploadedImageUrl" alt="Uploaded Image" />
+  </div>
+
+  <!-- Right Panel: Predictions -->
+  <div class="right-panel">
+    <div class="content">
+      <h1 class="title">Results</h1>
+      <p class="subtitle">Predictions from the models</p>
+
+      <!-- Pretrained Model Predictions -->
+      <div class="predictions-section">
+        <h3>Model A – Fine-tuned</h3>
+        <div *ngFor="let prediction of pretrainedModelPredictions" class="prediction-item">
+          <span class="label">{{ prediction.name }}</span>
+          <span class="probability">{{ prediction.probability | percent:'1.0-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Custom Model Predictions -->
+      <div class="predictions-section">
+        <h3>Model B – Custom Trained</h3>
+        <div *ngFor="let prediction of customModelPredictions" class="prediction-item">
+          <span class="label">{{ prediction.name }}</span>
+          <span class="probability">{{ prediction.probability | percent:'1.0-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Go Back Button -->
+      <div class="button-container">
+        <button mat-raised-button color="primary" (click)="goBack()">Go Back</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+.upload-wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f6fff6;
+}
+
+.left-panel {
+  flex: 1;
+  background-color: #e4f5e7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.illustration {
+  width: 80%;
+  aspect-ratio : 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.content {
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+.title {
+  color: #1b5e20;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #388e3c;
+  margin-bottom: 2rem;
+}
+
+.upload-zone {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background-color: #c8e6c9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative; // Make the upload zone a positioning context
+  overflow: visible; // Allow elements to appear outside the circle
+  margin: 0 auto 2rem;
+}
+
+.button-container {
+  text-align: center; // Center the button horizontally
+  margin-top: 2rem; // Add spacing above the button
+}
+
+.upload-btn button {
+  z-index: 1;
+}
+
+.drop-text {
+  margin-top: 0.5rem;
+  color: #2e7d32;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.format-info {
+  font-size: 0.9rem;
+  color: gray; // Default color
+  margin-top: 0.5rem;
+}
+
+.error-text {
+  font-size: 0.9rem;
+  color: rgb(250, 96, 96); // Error color
+  margin-top: 0.5rem;
+}
+
+.remove-btn {
+  position: absolute; // Position the button relative to the upload zone
+  top: 0px; // Adjust the vertical position to move it outside the circle
+  right: 0px; // Adjust the horizontal position to move it outside the circle
+  background: rgb(250, 96, 96);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  z-index: 10; // Ensure it appears above other elements
+  width: 50px; // Set a fixed width for the button
+  height: 50px; // Set a fixed height for the button
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.format-info {
+  font-size: 0.8rem;
+  color: gray;
+  margin-top: 0.5rem;
+}
+
+button[mat-raised-button] {
+  margin-top: 1rem;
+  color: #2e7d32;
+  outline: none;
+  transition: box-shadow 0.3s ease; // Smooth transition for the shadow effect
+}
+
+button[mat-raised-button]:hover {
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.6); // Green shadow on hover
+}
+
+button[mat-raised-button]:active,
+button[mat-raised-button]:focus {
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.8); // Green shadow on click or focus
+  outline: none; // Remove default focus outline
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
