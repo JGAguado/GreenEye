@@ -3,7 +3,7 @@ services:
     name: greeneye-backend
     env: docker
     plan: free
-    branch: main
+    branch: render 
     repo: https://github.com/JGAguado/GreenEye
     rootDir: backend
     dockerfilePath: Dockerfile
@@ -16,7 +16,7 @@ services:
     name: greeneye-frontend
     env: docker
     plan: free
-    branch: main
+    branch: render
     repo: https://github.com/JGAguado/GreenEye
     rootDir: frontend
     dockerfilePath: Dockerfile
