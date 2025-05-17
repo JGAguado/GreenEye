@@ -31,6 +31,8 @@ SPECIES_ID_TO_NAME_PATH = "models/plantnet300K_species_id_2_name.json"
 
 from functools import lru_cache
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 @lru_cache()
 def get_pretrained_model(use_gpu=False):
@@ -153,6 +155,13 @@ def predict_species(
 # FastAPI application
 app = FastAPI(title="GreenEye Species Classifier")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # Angular dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/predict/species/")
 async def species_endpoint(
