@@ -63,18 +63,18 @@ def load_species_model(use_gpu: bool = False) -> torch.nn.Module:
 # Helper to load custom model
 def load_custom_model(use_gpu: bool = False) -> torch.nn.Module:
     """
-    Initializes and loads the custom EfficientNet-B0 model.
+    Initializes and loads the custom EfficientNet-B4 model.
     Args:
         use_gpu: whether to load weights onto GPU
     Returns:
         Model ready for inference (in eval mode)
     """
-    filename = "models/efficientnet_b0_plantnet.pth"
+    filename = "models/efficientnet_b4_plantnet.pth"
     if not os.path.exists(filename):
         raise FileNotFoundError(f"Custom model weights not found at {filename}")
     
-    # Initialize EfficientNet-B0 model using torchvision instead of timm
-    model = torchvision.models.efficientnet_b0(pretrained=False, num_classes=1081)
+    # Initialize EfficientNet-B4 model using torchvision
+    model = torchvision.models.efficientnet_b4(pretrained=False, num_classes=1081)
     load_model(model, filename=filename, use_gpu=use_gpu)
     model.eval()
     return model
