@@ -30,6 +30,32 @@
   padding: 2rem;
 }
 
+@media (max-width: 768px) {
+  .upload-wrapper {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .left-panel,
+  .right-panel {
+    flex: none;
+    width: 100%;
+    min-height: 250px;
+    padding: 1.5rem 0;
+  }
+
+  .left-panel {
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .right-panel {
+    padding: 1.5rem 0;
+  }
+}
+
 .content {
   text-align: center;
   max-width: 300px;
@@ -59,7 +85,7 @@
   align-items: center;
   position: relative; // Make the upload zone a positioning context
   overflow: visible; // Allow elements to appear outside the circle
-  margin: 0 auto 2rem;
+  margin: 0 auto;
 }
 
 .button-container {

@@ -3,6 +3,7 @@
   height: 100vh;
   overflow: hidden;
   background: #f6fff6; // Match the background color of the upload page
+  flex-direction: row; // Default: side by side
 }
 
 .left-panel {
@@ -26,7 +27,33 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .results-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .left-panel,
+  .right-panel {
+    flex: none;
+    width: 100%;
+    min-height: 250px;
+    padding: 1.5rem 0;
+  }
+
+  .left-panel {
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .right-panel {
+    padding: 1.5rem 0;
+  }
 }
 
 .content {
@@ -53,7 +80,7 @@
   margin: 0 auto 2rem;
   background-color: #c8e6c9; // Light green background for predictions
   border-radius: 10px;
-  padding: 1rem;
+  padding: 1.5rem 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
