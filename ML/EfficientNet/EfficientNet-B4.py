@@ -19,9 +19,26 @@ class PlantNetDataset(Dataset):
         self.data = data_df
         self.transform = transform
         
+        # Load class mapping
+        mapping_dir = r"C:\Users\jespe\Desktop\BTH\ML\GreenEye\backend\models"
+        
         # Create class mapping
-        self.classes = sorted(data_df["species"].unique())
-        self.class_to_idx = {cls: i for i, cls in enumerate(self.classes)}
+        with open(os.path.join(mapping_dir, "class_idx_to_species_id.json"), "r") as f:
+            raw_idx2id = json.load(f)
+            
+        with open(os.path.join(mapping_dir, "plantnet300K_species_id_2_name.json"), "r") as f:
+            raw_id2name = json.load(f)
+            
+        # Build the proper mapping
+        self.idx2species = {}
+        for idx_str, species_id in raw_idx2id.items():
+            idx = int(idx_str)
+            name = raw_id2name.get(species_id, "Unknown")
+            self.idx2species[idx] = name
+            
+        # Invert for dataset usage
+        self.class_to_idx = {name: idx for idx, name in self.idx2species.items()}
+        self.classes = [self.idx2species[i] for i in range(len(self.idx2species))]
         
     def __len__(self):
         return len(self.data)
@@ -29,14 +46,19 @@ class PlantNetDataset(Dataset):
     def __getitem__(self, idx):
         img_path = self.data.iloc[idx]["image_path"]
         species = self.data.iloc[idx]["species"]
-        
+    
         # Load and transform image
         image = Image.open(img_path).convert("RGB")
         if self.transform:
             image = self.transform(image)
-            
-        # Get class index
-        label = self.class_to_idx[species]
+        
+        # Get class index safely
+        if species in self.class_to_idx:
+            label = self.class_to_idx[species]
+        else:
+            # Handle unknown species (use a default index or skip)
+            print(f"Warning: Unknown species {species}")
+            label = 0  # Default to first class
         
         return image, torch.tensor(label)
 
@@ -47,7 +69,7 @@ def prepare_plantnet_data(plantnet_dir=None):
     
     # Set the correct path to your PlantNet-300K dataset
     if plantnet_dir is None:
-        plantnet_dir = Path(r"C:\Users\jeppu\Desktop\BTH\ML\Idefics3\Dataset\plantnet_300K")
+        plantnet_dir = Path(r"C:\Users\jespe\Desktop\BTH\ML\plantnet_300K")
     
     # Load species ID to name mapping
     with open(plantnet_dir / "plantnet300K_species_id_2_name.json", "r") as f:
@@ -97,7 +119,7 @@ def create_model(num_classes):
     return model
 
 # ------------ TRAINING FUNCTION ------------
-def train_model(model, train_loader, val_loader, device, num_epochs=10):
+def train_model(model, train_loader, val_loader, device, num_epochs=15):
     # Loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.00005, weight_decay=0.01)
@@ -261,7 +283,7 @@ def main():
     test_dataset = PlantNetDataset(test_df, transform=val_transform)
     
     # Create data loaders
-    batch_size = 8
+    batch_size = 16
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
@@ -282,11 +304,11 @@ def main():
         print("Model successfully using GPU")
     
     # Choose mode: "train", "inference" or "continue_training"
-    mode = "inference"
+    mode = "train"
     
     if mode == "train":
         print("Starting training...")
-        model = train_model(model, train_loader, val_loader, device, num_epochs=10)
+        model = train_model(model, train_loader, val_loader, device, num_epochs=15)
         print("Training complete!")
     
     elif mode == "inference":
