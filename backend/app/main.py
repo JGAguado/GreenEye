@@ -12,11 +12,13 @@ from datetime import datetime
 from typing import Dict, List, Tuple
 
 import torch
+import torchvision
 import torchvision.transforms as transforms
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 from PIL import Image
 from torchvision.models import resnet18
+import timm
 
 from app.logger import get_logs, log_request
 
@@ -28,6 +30,8 @@ CLASS_IDX_TO_SPECIES_ID_PATH = "models/class_idx_to_species_id.json"
 SPECIES_ID_TO_NAME_PATH = "models/plantnet300K_species_id_2_name.json"
 
 from functools import lru_cache
+
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @lru_cache()
@@ -59,19 +63,18 @@ def load_species_model(use_gpu: bool = False) -> torch.nn.Module:
 # Helper to load custom model
 def load_custom_model(use_gpu: bool = False) -> torch.nn.Module:
     """
-    Initializes and loads the custom model.
+    Initializes and loads the custom EfficientNet-B4 model.
     Args:
         use_gpu: whether to load weights onto GPU
     Returns:
         Model ready for inference (in eval mode)
     """
-    # filename = "models/custom_model_weights.tar"
-    filename = "models/resnet18_weights_best_acc.tar"
+    filename = "models/efficientnet_b4_plantnet.pth"
     if not os.path.exists(filename):
         raise FileNotFoundError(f"Custom model weights not found at {filename}")
     
-    # Initialize model (using ResNet18 as an example, modify as needed)
-    model = resnet18(num_classes=1081)
+    # Initialize EfficientNet-B4 model using torchvision
+    model = torchvision.models.efficientnet_b4(pretrained=False, num_classes=1081)
     load_model(model, filename=filename, use_gpu=use_gpu)
     model.eval()
     return model
@@ -152,6 +155,13 @@ def predict_species(
 # FastAPI application
 app = FastAPI(title="GreenEye Species Classifier")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # Angular dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/predict/species/")
 async def species_endpoint(
