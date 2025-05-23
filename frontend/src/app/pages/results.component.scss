@@ -1,7 +1,7 @@
 .results-container {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh; // Change from height to min-height
+  overflow: auto; // Change from hidden to auto to allow scrolling
   background: #f6fff6; // Match the background color of the upload page
   flex-direction: row; // Default: side by side
 }
@@ -12,12 +12,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100vh; // Ensure minimum height
+  overflow: auto; // Allow scrolling in left panel for zoom
 
   img {
     border-radius: 50%; // Circular image
     width: 80%; // Match the size of the illustration on the upload page
     aspect-ratio: 1 / 1; // Maintain a square aspect ratio
     object-fit: cover; // Ensure the image fits within the circle
+    max-width: none; // Allow image to scale with zoom
   }
 }
 
@@ -28,6 +31,8 @@
   justify-content: center;
   align-items: center;
   padding: 1.5rem 0;
+  min-height: 100vh; // Ensure minimum height
+  overflow: auto; // Allow scrolling when content overflows
 }
 
 @media (max-width: 768px) {
