@@ -20,7 +20,7 @@ class PlantNetDataset(Dataset):
         self.transform = transform
         
         # Load class mapping
-        mapping_dir = r"C:\Users\jespe\Desktop\BTH\ML\GreenEye\backend\models"
+        mapping_dir = r"C:\Users\jeppu\Desktop\BTH\ML\Repo\GreenEye\backend\models"
         
         # Create class mapping
         with open(os.path.join(mapping_dir, "class_idx_to_species_id.json"), "r") as f:
@@ -69,7 +69,7 @@ def prepare_plantnet_data(plantnet_dir=None):
     
     # Set the correct path to your PlantNet-300K dataset
     if plantnet_dir is None:
-        plantnet_dir = Path(r"C:\Users\jespe\Desktop\BTH\ML\plantnet_300K")
+        plantnet_dir = Path(r"C:\Users\jeppu\Desktop\BTH\ML\Idefics3\Dataset\plantnet_300K")
     
     # Load species ID to name mapping
     with open(plantnet_dir / "plantnet300K_species_id_2_name.json", "r") as f:
@@ -304,7 +304,7 @@ def main():
         print("Model successfully using GPU")
     
     # Choose mode: "train", "inference" or "continue_training"
-    mode = "train"
+    mode = "inference"
     
     if mode == "train":
         print("Starting training...")
