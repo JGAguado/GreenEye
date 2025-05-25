@@ -1,6 +1,6 @@
 # GreenEye
 
-GreenEye is an AI-powered environmental monitoring system that detects and analyzes environmental changes using computer vision and machine learning. The platform features an Angular frontend for user interaction and a Flask backend for inference and data processing.
+GreenEye is an application designed to identify plant species based on a picture uploaded by the user. It outputs a ranked list of the top five most likely plant species, based on two machine learning models: a pretrained model (Pl@ntNet-300K) and a custom model trained by the development team. 
 
 ---
 
