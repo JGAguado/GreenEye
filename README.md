@@ -8,7 +8,7 @@ GreenEye is an application designed to identify plant species based on a picture
 
 ```
 GreenEye/
-├── backend/      # Flask/FastAPI backend API and ML inference
+├── backend/      # Python backend API and ML inference
 ├── frontend/     # Angular frontend application
 ├── Documentation/ # Project documentation and plans
 ├── ML/           # Machine learning scripts and experiments
@@ -31,7 +31,7 @@ GreenEye/
    The frontend sends the image to the backend API for analysis.
 
 3. **Backend processes the image**  
-   The Flask backend runs a machine learning model to identify plant species.
+   The Python backend runs a machine learning model to identify plant species.
 
 4. **Results displayed**  
    The frontend shows the predicted species and confidence scores.
