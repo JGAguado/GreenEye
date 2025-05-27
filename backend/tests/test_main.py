@@ -47,7 +47,11 @@ def test_species_endpoint_valid_image():
         # Validate response
         assert response.status_code == 200
         assert response.json() == {
-            "predictions": [
+            "pretrained_model": [
+                {"class_index": 0, "name": "Species A", "probability": 0.9},
+                {"class_index": 1, "name": "Species B", "probability": 0.1},
+            ],
+            "custom_model": [
                 {"class_index": 0, "name": "Species A", "probability": 0.9},
                 {"class_index": 1, "name": "Species B", "probability": 0.1},
             ]

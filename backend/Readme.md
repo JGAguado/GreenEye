@@ -20,6 +20,8 @@ python-dotenv>=1.0.0
 bcrypt==3.2.0
 passlib[bcrypt]>=1.7.4
 python-jose>=3.3.0
+pytest>=7.0.0
+pytest-asyncio>=0.23.0
 ```
 
 ### Package Descriptions
@@ -36,6 +38,8 @@ python-jose>=3.3.0
 - **bcrypt:** Password hashing backend
 - **passlib:** High-level password hashing API
 - **python-jose:** JSON Web Token (JWT) management
+- **pytest:** Testing framework
+- **pytest-asyncio:** Async test support
 
 ---
 
@@ -49,7 +53,7 @@ python-jose>=3.3.0
 python -m venv venv
 source venv/bin/activate  # Unix/macOS
 # or
-.env\Scriptsctivate  # Windows
+.\venv\Scripts\activate  # Windows
 ```
 
 2. Install dependencies:
@@ -75,6 +79,49 @@ docker run -p 8000:8000 greeneye-backend
 ```
 
 The service will be available at `http://localhost:8000`
+
+---
+
+## 🧪 Testing
+
+The project uses pytest for unit testing. Tests are located in the `tests/` directory.
+
+### Running Tests
+
+To run all tests:
+
+```bash
+pytest
+```
+
+To run tests with verbose output:
+
+```bash
+pytest -v
+```
+
+To run a specific test file:
+
+```bash
+pytest tests/test_main.py
+```
+
+To run tests with coverage report:
+
+```bash
+pytest --cov=app tests/
+```
+
+### Test Structure
+
+```
+backend/
+├── tests/
+│   ├── test_main.py      # API endpoint tests
+│   ├── test_utils.py     # Utility function tests
+│   ├── test_utils_2.py   # Additional utility tests
+│   └── test_utils_3.py   # Model-related tests
+```
 
 ---
 
@@ -107,17 +154,6 @@ curl -X POST "http://localhost:8000/predict/species/" \
 
 ---
 
-## 📁 Project Structure
-
-```
-backend/
-├── main.py     # FastAPI app with inference logic
-├── requirements.txt       # Python dependencies
-└── Dockerfile             # Deployment container
-```
-
----
-
 ## 📑 API Docs
 
 Once running, visit:
@@ -138,3 +174,15 @@ Once running, visit:
 ## 🪪 License
 
 This project is licensed under the MIT License.
+
+## 📁 Project Structure
+
+### Key Components
+
+- **app/**: Core application code (FastAPI endpoints, utilities, logging)
+- **tests/**: Test suite with component-specific test files
+- **models/**: Pre-trained model weights and species mappings
+- **logs/**: Application and test logs
+- **Configuration**: `requirements.txt`, `Dockerfile`, `docker-compose.yaml`, `pytest.ini`, `noxfile.py`
+
+
